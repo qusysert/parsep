@@ -7,7 +7,7 @@ import (
 	_ "github.com/gocolly/colly"
 	"golang.org/x/net/html"
 	"log"
-	"parser/cmd/internal/model"
+	model2 "parser/internal/model"
 	"regexp"
 	"strconv"
 	"sync"
@@ -15,12 +15,12 @@ import (
 )
 
 func main() {
-	var materials []model.PriceRecord
-	mcxSelectors := model.ParseSelectors{
+	var materials []model2.PriceRecord
+	mcxSelectors := model2.ParseSelectors{
 		TitleSelector: ".commodityTitle",
 		PriceSelector: ".commodityPrice",
 	}
-	lmeSelectors := model.ParseSelectors{
+	lmeSelectors := model2.ParseSelectors{
 		TitleSelector: ".hero-banner__title",
 		PriceSelector: ".hero-metal-data__number",
 	}
@@ -28,51 +28,51 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	parsePool := []model.ParsePool{
+	parsePool := []model2.ParsePool{
 		{
 			Url:       "https://economictimes.indiatimes.com/commoditysummary/symbol-NICKEL.cms",
 			Selectors: mcxSelectors,
-			Formatter: model.McxFormatter,
+			Formatter: model2.McxFormatter,
 		},
 		{
 			Url:       "https://economictimes.indiatimes.com/commoditysummary/symbol-ALUMINIUM.cms",
 			Selectors: mcxSelectors,
-			Formatter: model.McxFormatter,
+			Formatter: model2.McxFormatter,
 		},
 		{
 			Url:       "https://economictimes.indiatimes.com/commoditysummary/symbol-ZINC.cms",
 			Selectors: mcxSelectors,
-			Formatter: model.McxFormatter,
+			Formatter: model2.McxFormatter,
 		},
 		{
 			Url:       "https://economictimes.indiatimes.com/commoditysummary/symbol-LEAD.cms",
 			Selectors: mcxSelectors,
-			Formatter: model.McxFormatter,
+			Formatter: model2.McxFormatter,
 		},
 		{
 			Url:       "https://economictimes.indiatimes.com/commoditysummary/symbol-COPPER.cms",
 			Selectors: mcxSelectors,
-			Formatter: model.McxFormatter,
+			Formatter: model2.McxFormatter,
 		},
 		{
 			Url:       "https://www.lme.com/Metals/Non-ferrous/LME-Copper#Trading+day+summary",
 			Selectors: lmeSelectors,
-			Formatter: model.LmeFormatter,
+			Formatter: model2.LmeFormatter,
 		},
 		{
 			Url:       "https://www.lme.com/en/Metals/Non-ferrous/LME-Aluminium#Trading+day+summary",
 			Selectors: lmeSelectors,
-			Formatter: model.LmeFormatter,
+			Formatter: model2.LmeFormatter,
 		},
 		{
 			Url:       "https://www.lme.com/en/Metals/Non-ferrous/LME-Nickel",
 			Selectors: lmeSelectors,
-			Formatter: model.LmeFormatter,
+			Formatter: model2.LmeFormatter,
 		},
 		{
 			Url:       "https://www.lme.com/en/Metals/Non-ferrous/LME-Zinc#Trading+day+summary",
 			Selectors: lmeSelectors,
-			Formatter: model.LmeFormatter,
+			Formatter: model2.LmeFormatter,
 		},
 	}
 
@@ -93,7 +93,7 @@ func main() {
 	// Scrape each URL concurrently using a goroutine
 	for _, parsePoint := range parsePool {
 		wg.Add(1)
-		go func(u string, s model.ParseSelectors, f func(model.PriceRecord) model.PriceRecord) {
+		go func(u string, s model2.ParseSelectors, f func(model2.PriceRecord) model2.PriceRecord) {
 			defer wg.Done()
 			pr, err := ScrapePrice(u, *collector, s, f)
 			if err != nil {
@@ -111,8 +111,8 @@ func main() {
 	fmt.Printf("Scraped in %v\n", time.Since(start))
 }
 
-func ScrapePrice(url string, c colly.Collector, selectors model.ParseSelectors, formatter func(model.PriceRecord) model.PriceRecord) (model.PriceRecord, error) {
-	pr := model.PriceRecord{}
+func ScrapePrice(url string, c colly.Collector, selectors model2.ParseSelectors, formatter func(model2.PriceRecord) model2.PriceRecord) (model2.PriceRecord, error) {
+	pr := model2.PriceRecord{}
 
 	c.OnHTML(selectors.TitleSelector, func(e *colly.HTMLElement) {
 		commodity := e.DOM.Contents().FilterFunction(func(i int, s *goquery.Selection) bool {
@@ -132,7 +132,7 @@ func ScrapePrice(url string, c colly.Collector, selectors model.ParseSelectors, 
 
 	err := c.Visit(url)
 	if err != nil {
-		return model.PriceRecord{}, fmt.Errorf("error visiting %s: %w", url, err)
+		return model2.PriceRecord{}, fmt.Errorf("error visiting %s: %w", url, err)
 	}
 	pr = formatter(pr)
 	return pr, nil
