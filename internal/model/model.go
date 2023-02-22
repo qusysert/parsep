@@ -1,6 +1,7 @@
 package model
 
 type PriceRecord struct {
+	Exchange string
 	Material string
 	Price    float64
 }
@@ -10,7 +11,8 @@ type ParseSelectors struct {
 	PriceSelector string
 }
 
-type ParsePool struct {
+type ParsePoint struct {
+	Exchange  string
 	Url       string
 	Selectors ParseSelectors
 	Formatter func(PriceRecord) PriceRecord

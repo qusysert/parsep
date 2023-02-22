@@ -2,14 +2,14 @@ package model
 
 import "strings"
 
-func LmeFormatter(pr PriceRecord) PriceRecord {
+func lmeFormatter(pr PriceRecord) PriceRecord {
 	m := strings.TrimSpace(strings.ReplaceAll(pr.Material, "\n", ""))
 	m = strings.TrimPrefix(m, "LME ")
 	pr.Material = m
 	return pr
 }
 
-func McxFormatter(pr PriceRecord) PriceRecord {
+func mcxFormatter(pr PriceRecord) PriceRecord {
 	m := strings.TrimSpace(strings.ReplaceAll(pr.Material, "\n", ""))
 	m = strings.ReplaceAll(m, "&nbsp;", " ")
 	m = strings.TrimSuffix(m, "Rate")
