@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gocolly/colly"
 	"parser/internal/model"
+	"sort"
 )
 
 func (s *Service) FormTableContent(c colly.Collector, pool []model.ParsePoint) ([]model.TableColumn, error) {
@@ -33,8 +34,12 @@ func (s *Service) FormTableContent(c colly.Collector, pool []model.ParsePoint) (
 			}
 			col.Prices = append(col.Prices, res.resp)
 		}
-		columns = append(columns, col)
 
+		sort.Slice(col.Prices, func(i, j int) bool {
+			return col.Prices[i].Material < col.Prices[j].Material
+		})
+
+		columns = append(columns, col)
 	}
 
 	return columns, nil
