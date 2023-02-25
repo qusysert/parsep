@@ -40,5 +40,6 @@ func main() {
 
 	// Print the JSON string with newlines
 	fmt.Println(string(jsonString))
+	fmt.Println(srv.GenTableHTML(materials))
 	fmt.Printf("Scraped in %v\n", time.Since(start))
 }

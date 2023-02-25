@@ -33,6 +33,7 @@ var ParsePool = []ParsePoint{
 			"https://www.lme.com/en/Metals/Non-ferrous/LME-Aluminium#Trading+day+summary",
 			"https://www.lme.com/en/Metals/Non-ferrous/LME-Nickel",
 			"https://www.lme.com/en/Metals/Non-ferrous/LME-Zinc#Trading+day+summary",
+			"https://www.lme.com/Metals/Non-ferrous/LME-Lead#Trading+day+summary",
 		},
 		Selectors: lmeSelectors,
 		Formatter: lmeFormatter,
