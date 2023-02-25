@@ -1,0 +1,7 @@
+###
+POST localhost:3000/render
+Content-Type: application/json
+
+{
+  "query": "<table><tr><th></th><th>MCX, Price, Per 1 KGS</th><th>LME, 3-month, $</th></tr><tr><td>Aluminium</td><td>205.60</td><td>2396.00</td></tr><tr><td>Copper</td><td>759.40</td><td>8904.00</td></tr><tr><td>Lead</td><td>180.65</td><td>2056.00</td></tr><tr><td>Nickel</td><td>2286.10</td><td>25387.00</td></tr><tr><td>Zinc</td><td>266.00</td><td>3034.50</td></tr></table>"
+}

@@ -1,0 +1,44 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer');
+
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/render', async (req, res) => {
+    const html = req.body.query;
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage({args: ['--disable-antialiasing']});
+
+    await page.setContent(html);
+
+    // Set the width and height of the screenshot
+    const width = 500;
+    const height = 300;
+
+    await page.setViewport({
+        width: width,
+        height: height,
+        deviceScaleFactor: 5 // set device scale factor to 2x
+    });
+
+    const imageBuffer = await page.screenshot({
+        clip: { x: 0, y: 0, width, height },
+        type: 'jpeg',
+        quality: 100 // set JPEG compression quality to 90%
+    });
+
+    await browser.close();
+
+    res.writeHead(200, {
+        'Content-Type': 'image/jpeg',
+        'Content-Length': imageBuffer.length
+    });
+
+    res.end(imageBuffer);
+});
+
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
+});
