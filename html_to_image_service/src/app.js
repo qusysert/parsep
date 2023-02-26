@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
 
 const width = 500;
 const height = 300;
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 3000;
 
 app.post('/render', async (req, res) => {
     const html = req.body.query;
@@ -43,6 +46,6 @@ app.post('/render', async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
+app.listen(port, host,() => {
     console.log('Server started on port 3000');
 });
