@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func (s *Service) GenTableHTML(data []model.TableColumn) string {
+func (s *Service) GenTableHTML(data []model.TableColumn) (string, error) {
 	var sb strings.Builder
 
 	// start table
@@ -15,13 +15,19 @@ func (s *Service) GenTableHTML(data []model.TableColumn) string {
 	// write headers
 	sb.WriteString("<tr><th></th>")
 	for _, metal := range data {
-		fmt.Fprintf(&sb, "<th>%s</th>", metal.Title)
+		_, err := fmt.Fprintf(&sb, "<th>%s</th>", metal.Title)
+		if err != nil {
+			return "", fmt.Errorf("cant format title: %w", err)
+		}
 	}
 	sb.WriteString("</tr>")
 
 	// write data rows
 	for _, material := range data[0].Prices {
-		fmt.Fprintf(&sb, "<tr><td>%s</td>", material.Material)
+		_, err := fmt.Fprintf(&sb, "<tr><td>%s</td>", material.Material)
+		if err != nil {
+			return "", fmt.Errorf("cant format row: %w", err)
+		}
 		for _, metal := range data {
 			var price float64
 			for _, m := range metal.Prices {
@@ -30,7 +36,10 @@ func (s *Service) GenTableHTML(data []model.TableColumn) string {
 					break
 				}
 			}
-			fmt.Fprintf(&sb, "<td>%.2f</td>", price)
+			_, err := fmt.Fprintf(&sb, "<td>%.2f</td>", price)
+			if err != nil {
+				return "", fmt.Errorf("cant format row price: %w", err)
+			}
 		}
 		sb.WriteString("</tr>")
 	}
@@ -38,5 +47,5 @@ func (s *Service) GenTableHTML(data []model.TableColumn) string {
 	// end table
 	sb.WriteString("</table>")
 
-	return sb.String()
+	return sb.String(), nil
 }

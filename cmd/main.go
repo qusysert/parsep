@@ -9,12 +9,14 @@ import (
 	"parser/internal/app/repository"
 	"parser/internal/app/service"
 	model "parser/internal/model"
+	"parser/pkg/render_client"
 	"time"
 )
 
 func main() {
-	r := repository.New()
-	srv := service.New(r)
+	repo := repository.New()
+	renderer := render_client.New("localhost", 3000)
+	srv := service.New(repo, renderer)
 	start := time.Now()
 
 	collector := colly.NewCollector()

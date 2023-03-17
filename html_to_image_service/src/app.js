@@ -8,8 +8,8 @@ app.use(bodyParser.json());
 
 const width = 500;
 const height = 300;
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3000;
+const host = 'localhost';
+const port = 3000;
 
 app.post('/render', async (req, res) => {
     const html = req.body.query;
