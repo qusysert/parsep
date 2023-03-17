@@ -22,6 +22,10 @@ func (r *Repository) ScrapePrice(url string, c colly.Collector, selectors model.
 		pr.Price = price
 	})
 
+	c.OnHTML(selectors.ChangeSelector, func(e *colly.HTMLElement) {
+		pr.Change = e.Text
+	})
+
 	c.OnHTML(selectors.TitleSelector, func(e *colly.HTMLElement) {
 		commodity := e.DOM.Contents().FilterFunction(func(i int, s *goquery.Selection) bool {
 			return s.Nodes[0].Type == html.TextNode

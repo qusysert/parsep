@@ -1,12 +1,14 @@
 package model
 
 var mcxSelectors = ParseSelectors{
-	TitleSelector: ".commodityTitle",
-	PriceSelector: ".commodityPrice",
+	TitleSelector:  ".commodityTitle",
+	PriceSelector:  ".commodityPrice",
+	ChangeSelector: ".perChng",
 }
 var lmeSelectors = ParseSelectors{
-	TitleSelector: ".hero-banner__title",
-	PriceSelector: ".hero-metal-data__number",
+	TitleSelector:  ".hero-banner__title",
+	PriceSelector:  ".hero-metal-data__number",
+	ChangeSelector: ".hero-metal-data__change",
 }
 
 var ParsePool = []ParsePoint{

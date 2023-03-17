@@ -41,6 +41,5 @@ func (s *Service) FormTableContent(c colly.Collector, pool []model.ParsePoint) (
 
 		columns = append(columns, col)
 	}
-
 	return columns, nil
 }

@@ -17,7 +17,11 @@ func (s *Service) GenTableHTML(data []model.TableColumn) (string, error) {
 	for _, metal := range data {
 		_, err := fmt.Fprintf(&sb, "<th>%s</th>", metal.Title)
 		if err != nil {
-			return "", fmt.Errorf("cant format title: %w", err)
+			return "", fmt.Errorf("cant format material title: %w", err)
+		}
+		_, err = fmt.Fprintf(&sb, "<th>%s</th>", "Изменение, %")
+		if err != nil {
+			return "", fmt.Errorf("cant format change title: %w", err)
 		}
 	}
 	sb.WriteString("</tr>")
@@ -30,15 +34,21 @@ func (s *Service) GenTableHTML(data []model.TableColumn) (string, error) {
 		}
 		for _, metal := range data {
 			var price float64
+			var change string
 			for _, m := range metal.Prices {
 				if m.Material == material.Material {
 					price = m.Price
+					change = m.Change
 					break
 				}
 			}
 			_, err := fmt.Fprintf(&sb, "<td>%.2f</td>", price)
 			if err != nil {
 				return "", fmt.Errorf("cant format row price: %w", err)
+			}
+			_, err = fmt.Fprintf(&sb, "<td>%s</td>", change)
+			if err != nil {
+				return "", fmt.Errorf("cant format row change: %w", err)
 			}
 		}
 		sb.WriteString("</tr>")

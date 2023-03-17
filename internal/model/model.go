@@ -3,11 +3,13 @@ package model
 type PriceRecord struct {
 	Material string
 	Price    float64
+	Change   string
 }
 
 type ParseSelectors struct {
-	TitleSelector string
-	PriceSelector string
+	TitleSelector  string
+	PriceSelector  string
+	ChangeSelector string
 }
 
 type ParsePoint struct {
