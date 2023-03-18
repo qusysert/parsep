@@ -18,8 +18,8 @@ func New(host string, port int) *RenderClient {
 	return &RenderClient{Host: host, Port: port}
 }
 
-func (rc *RenderClient) Render(req Request) ([]byte, error) {
-	json, err := json.Marshal(req)
+func (rc *RenderClient) Render(html string) ([]byte, error) {
+	json, err := json.Marshal(Request{Query: html})
 	if err != nil {
 		return nil, fmt.Errorf("cant marshall docx-gen req to json: %w", err)
 	}

@@ -5,3 +5,9 @@ Content-Type: application/json
 {
   "query": "<table><tr><th></th><th>MCX, Price, Per 1 KGS</th><th>Изменение, %</th><th>LME, 3-month, $</th><th>Изменение, %</th></tr><tr><td>Aluminium</td><td>205.10</td><td>0.74</td><td>2277.00</td><td>-3.21</td></tr><tr><td>Copper</td><td>757.20</td><td>0.79</td><td>8518.00</td><td>0.16</td></tr><tr><td>Lead</td><td>181.70</td><td>0.11</td><td>2066.50</td><td>-0.12</td></tr><tr><td>Nickel</td><td>2002.50</td><td>0.0</td><td>23003.00</td><td>-0.16</td></tr><tr><td>Zinc</td><td>258.60</td><td>1.25</td><td>2866.00</td><td>-1.50</td></tr></table>"
 }
+
+###
+POST localhost:8080/getTable
+Content-Type: application/json
+
+{}

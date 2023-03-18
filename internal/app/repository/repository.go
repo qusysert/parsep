@@ -1,7 +1,11 @@
 package repository
 
-type Repository struct{}
+import "github.com/gocolly/colly"
 
-func New() *Repository {
-	return &Repository{}
+type Repository struct {
+	colly colly.Collector
+}
+
+func New(c colly.Collector) *Repository {
+	return &Repository{colly: c}
 }

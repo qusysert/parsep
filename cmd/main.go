@@ -3,9 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gocolly/colly"
 	_ "github.com/gocolly/colly"
+	"github.com/gorilla/mux"
 	"log"
+	"net/http"
+	"parser/internal/app/handler"
+	"parser/internal/app/pkg"
+	"parser/internal/app/pkg/config"
 	"parser/internal/app/repository"
 	"parser/internal/app/service"
 	model "parser/internal/model"
@@ -14,26 +18,45 @@ import (
 )
 
 func main() {
-	repo := repository.New()
-	renderer := render_client.New("localhost", 3000)
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal("cannot load cfg: ", err)
+	}
+	parser := pkg.New(cfg.ParserTimeoutSeconds)
+	repo := repository.New(parser.Collector)
+	renderer := render_client.New(cfg.RendererHost, cfg.RendererPort)
 	srv := service.New(repo, renderer)
+	hdl := handler.New(srv)
 	start := time.Now()
 
-	collector := colly.NewCollector()
-	collector.SetRequestTimeout(120 * time.Second)
-	collector.OnRequest(func(r *colly.Request) {
-		log.Println("Visiting", r.URL)
-	})
+	router := mux.NewRouter()
+	// Setting timeout for the server
+	server := &http.Server{
+		Addr:         ":" + cfg.HttpPort,
+		ReadTimeout:  600 * time.Second,
+		WriteTimeout: 600 * time.Second,
+		Handler:      router,
+	}
+	// Linking addresses and handlers
+	for _, rec := range [...]struct {
+		route   string
+		handler http.HandlerFunc
+	}{
+		{route: "/getTable", handler: hdl.GetTableHandler},
+	} {
+		router.HandleFunc(rec.route, rec.handler)
+	}
 
-	collector.OnResponse(func(r *colly.Response) {
-		log.Println("Got a response from", r.Request.URL)
-	})
+	http.Handle("/", router)
 
-	collector.OnError(func(r *colly.Response, e error) {
-		log.Println("Got this error:", e)
-	})
+	log.Printf("Server started on port %s \n", cfg.HttpPort)
 
-	materials, err := srv.FormTableContent(*collector, model.ParsePool)
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	materials, err := srv.FormTableContent(model.ParsePool)
 	if err != nil {
 		log.Fatalf("cant get table content: %v", err)
 	}

@@ -11,10 +11,9 @@ import (
 	"strconv"
 )
 
-func (r *Repository) ScrapePrice(url string, c colly.Collector, selectors model.ParseSelectors, formatter func(model.PriceRecord) model.PriceRecord) (model.PriceRecord, error) {
+func (r *Repository) ScrapePrice(url string, selectors model.ParseSelectors, formatter func(model.PriceRecord) model.PriceRecord) (model.PriceRecord, error) {
 	var pr model.PriceRecord
-
-	c.OnHTML(selectors.PriceSelector, func(e *colly.HTMLElement) {
+	r.colly.OnHTML(selectors.PriceSelector, func(e *colly.HTMLElement) {
 		price, err := strconv.ParseFloat(regexp.MustCompile(`[^\d\.]`).ReplaceAllString(e.Text, ""), 64)
 		if err != nil {
 			log.Println(err)
@@ -22,18 +21,18 @@ func (r *Repository) ScrapePrice(url string, c colly.Collector, selectors model.
 		pr.Price = price
 	})
 
-	c.OnHTML(selectors.ChangeSelector, func(e *colly.HTMLElement) {
+	r.colly.OnHTML(selectors.ChangeSelector, func(e *colly.HTMLElement) {
 		pr.Change = e.Text
 	})
 
-	c.OnHTML(selectors.TitleSelector, func(e *colly.HTMLElement) {
+	r.colly.OnHTML(selectors.TitleSelector, func(e *colly.HTMLElement) {
 		commodity := e.DOM.Contents().FilterFunction(func(i int, s *goquery.Selection) bool {
 			return s.Nodes[0].Type == html.TextNode
 		}).Text()
 		pr.Material = commodity
 	})
 
-	err := c.Visit(url)
+	err := r.colly.Visit(url)
 	if err != nil {
 		return model.PriceRecord{}, fmt.Errorf("error visiting %s: %w", url, err)
 	}
