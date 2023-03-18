@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const puppeteer = require('puppeteer');
+const { chromium } = require('playwright');
 require('dotenv').config();
 
 const app = express();
@@ -15,15 +15,15 @@ app.post('/render', async (req, res) => {
     const html = req.body.query;
 
     try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage({args: ['--disable-antialiasing']});
+        const browser = await chromium.launch();
+        const context = await browser.newContext();
+        const page = await context.newPage();
 
         await page.setContent(html);
 
-        await page.setViewport({
+        await page.setViewportSize({
             width: width,
-            height: height,
-            deviceScaleFactor: 5 // set device scale factor to 2x
+            height: height
         });
 
         const imageBuffer = await page.screenshot({
