@@ -21,7 +21,17 @@ type ParsePoint struct {
 	Formatter func(PriceRecord) PriceRecord
 }
 
+type TableDataLinks struct {
+	Title     string
+	ParsePool []ParsePoint
+}
+
 type TableColumn struct {
 	Title  string
 	Prices []PriceRecord
+}
+
+type TabledData struct {
+	TableTitle string
+	Columns    []TableColumn
 }

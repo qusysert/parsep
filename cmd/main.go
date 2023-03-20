@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	_ "github.com/gocolly/colly"
 	"github.com/gorilla/mux"
 	"log"
@@ -12,7 +10,6 @@ import (
 	"parser/internal/app/pkg/config"
 	"parser/internal/app/repository"
 	"parser/internal/app/service"
-	model "parser/internal/model"
 	"parser/pkg/render_client"
 	"time"
 )
@@ -27,7 +24,6 @@ func main() {
 	renderer := render_client.New(cfg.RendererHost, cfg.RendererPort)
 	srv := service.New(repo, renderer)
 	hdl := handler.New(srv)
-	start := time.Now()
 
 	router := mux.NewRouter()
 	// Setting timeout for the server
@@ -55,16 +51,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-
-	materials, err := srv.FormTableContent(model.ParsePool)
-	if err != nil {
-		log.Fatalf("cant get table content: %v", err)
-	}
-
-	jsonString, _ := json.MarshalIndent(materials, "", "  ")
-
-	// Print the JSON string with newlines
-	fmt.Println(string(jsonString))
-	fmt.Println(srv.GenTableHTML(materials))
-	fmt.Printf("Scraped in %v\n", time.Since(start))
 }

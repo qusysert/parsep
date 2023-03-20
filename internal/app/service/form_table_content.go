@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"parser/internal/model"
 	"sort"
+	"time"
 )
 
-func (s *Service) FormTableContent(pool []model.ParsePoint) ([]model.TableColumn, error) {
+func (s *Service) FormTableContent(tableData model.TableDataLinks) (model.TabledData, error) {
 	var columns []model.TableColumn
 	type result struct {
 		resp model.PriceRecord
 		err  error
 	}
-	for _, pp := range pool {
+	for _, pp := range tableData.ParsePool {
 		var col model.TableColumn
 		results := make(chan result, len(pp.Urls))
 
@@ -26,7 +27,7 @@ func (s *Service) FormTableContent(pool []model.ParsePoint) ([]model.TableColumn
 		for i := 0; i < len(pp.Urls); i++ {
 			res := <-results
 			if res.err != nil {
-				return nil, fmt.Errorf("error pasing %s: %w", pp.Urls[i], res.err)
+				return model.TabledData{}, fmt.Errorf("error pasing %s: %w", pp.Urls[i], res.err)
 			}
 			col.Prices = append(col.Prices, res.resp)
 		}
@@ -37,5 +38,7 @@ func (s *Service) FormTableContent(pool []model.ParsePoint) ([]model.TableColumn
 
 		columns = append(columns, col)
 	}
-	return columns, nil
+	now := time.Now()
+
+	return model.TabledData{TableTitle: tableData.Title + now.Format("02.01.06"), Columns: columns}, nil
 }

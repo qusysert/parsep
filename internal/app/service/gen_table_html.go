@@ -6,15 +6,19 @@ import (
 	"strings"
 )
 
-func (s *Service) GenTableHTML(data []model.TableColumn) (string, error) {
+func (s *Service) GenTableHTML(data model.TabledData) (string, error) {
 	var sb strings.Builder
 
 	// start table
 	sb.WriteString("<table>")
+	_, err := fmt.Fprintf(&sb, "<th>%s</th>", data.TableTitle)
+	if err != nil {
+		return "", fmt.Errorf("cant write table title: %w", err)
+	}
 
 	// write headers
 	sb.WriteString("<tr><th></th>")
-	for _, metal := range data {
+	for _, metal := range data.Columns {
 		_, err := fmt.Fprintf(&sb, "<th>%s</th>", metal.Title)
 		if err != nil {
 			return "", fmt.Errorf("cant format material title: %w", err)
@@ -27,12 +31,12 @@ func (s *Service) GenTableHTML(data []model.TableColumn) (string, error) {
 	sb.WriteString("</tr>")
 
 	// write data rows
-	for _, material := range data[0].Prices {
+	for _, material := range data.Columns[0].Prices {
 		_, err := fmt.Fprintf(&sb, "<tr><td>%s</td>", material.Material)
 		if err != nil {
 			return "", fmt.Errorf("cant format row: %w", err)
 		}
-		for _, metal := range data {
+		for _, metal := range data.Columns {
 			var price float64
 			var change string
 			for _, m := range metal.Prices {

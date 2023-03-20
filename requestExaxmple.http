@@ -10,4 +10,6 @@ Content-Type: application/json
 POST localhost:8080/getTable
 Content-Type: application/json
 
-{}
+{
+  "table_name": "ColorMetalTable"
+}

@@ -11,8 +11,8 @@ import (
 )
 
 type IService interface {
-	FormTableContent(pool []model.ParsePoint) ([]model.TableColumn, error)
-	GenTableHTML(data []model.TableColumn) (string, error)
+	FormTableContent(tableData model.TableDataLinks) (model.TabledData, error)
+	GenTableHTML(data model.TabledData) (string, error)
 	RenderHtml(html string) ([]byte, error)
 }
 

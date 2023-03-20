@@ -1,27 +1,44 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"parser/internal/model"
 )
 
-func (h Handler) GetTableHandler(w http.ResponseWriter, r *http.Request) {
-	content, err := h.service.FormTableContent(model.ParsePool)
-	if err != nil {
-		http.Error(w, "cant form table content: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	htmlString, err := h.service.GenTableHTML(content)
-	if err != nil {
-		http.Error(w, "cant get table html: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	imageBytes, err := h.service.RenderHtml(htmlString)
-	if err != nil {
-		http.Error(w, "cant render table html to image: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "image/png")
+type GetTableRequest struct {
+	TableName string `json:"table_name"`
+}
+type GetTableResponse struct {
+	Success bool `json:"success"`
+}
 
-	_, _ = w.Write(imageBytes)
+func (h Handler) GetTableHandler(w http.ResponseWriter, r *http.Request) {
+	handle(w, r, func(req GetTableRequest) (GetTableResponse, error) {
+		var content model.TabledData
+		var err error
+		switch req.TableName {
+		case "ColorMetalTable":
+			content, err = h.service.FormTableContent(model.ColorMetalTable)
+			if err != nil {
+				return GetTableResponse{Success: false}, err
+			}
+		default:
+			return GetTableResponse{Success: false}, fmt.Errorf("table name %s not found", req.TableName)
+		}
+
+		htmlString, err := h.service.GenTableHTML(content)
+		if err != nil {
+			return GetTableResponse{Success: false}, err
+		}
+		imageBytes, err := h.service.RenderHtml(htmlString)
+		if err != nil {
+			return GetTableResponse{Success: false}, err
+		}
+		w.Header().Set("Content-Type", "image/png")
+
+		_, _ = w.Write(imageBytes)
+		return GetTableResponse{Success: true}, nil
+	})
+
 }
