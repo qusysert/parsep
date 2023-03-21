@@ -1,14 +1,23 @@
 package model
 
-var mcxSelectors = ParseSelectors{
-	TitleSelector:  ".commodityTitle",
-	PriceSelector:  ".commodityPrice",
-	ChangeSelector: ".perChng",
+var kitcoSelectors = []ParseSelectors{
+	{},
 }
-var lmeSelectors = ParseSelectors{
-	TitleSelector:  ".hero-banner__title",
-	PriceSelector:  ".hero-metal-data__number",
-	ChangeSelector: ".hero-metal-data__change",
+
+var mcxSelectors = []ParseSelectors{
+	{
+		TitleSelector:  ".commodityTitle",
+		PriceSelector:  ".commodityPrice",
+		ChangeSelector: ".perChng",
+	},
+}
+
+var lmeSelectors = []ParseSelectors{
+	{
+		TitleSelector:  ".hero-banner__title",
+		PriceSelector:  ".hero-metal-data__number",
+		ChangeSelector: ".hero-metal-data__change",
+	},
 }
 
 var ColorMetalTable = TableDataLinks{

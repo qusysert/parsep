@@ -11,7 +11,7 @@ func (s *Service) GenTableHTML(data model.TabledData) (string, error) {
 
 	// start table
 	sb.WriteString("<table>")
-	_, err := fmt.Fprintf(&sb, "<th>%s</th>", data.TableTitle)
+	_, err := fmt.Fprintf(&sb, `<caption style="text-align: center; bold">%s</caption>`, data.TableTitle)
 	if err != nil {
 		return "", fmt.Errorf("cant write table title: %w", err)
 	}
@@ -23,7 +23,7 @@ func (s *Service) GenTableHTML(data model.TabledData) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("cant format material title: %w", err)
 		}
-		_, err = fmt.Fprintf(&sb, "<th>%s</th>", "Изменение, %")
+		_, err = fmt.Fprintf(&sb, "<th>%s</th>", "Изм. %")
 		if err != nil {
 			return "", fmt.Errorf("cant format change title: %w", err)
 		}

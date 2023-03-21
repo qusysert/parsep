@@ -11,7 +11,9 @@ type Parser struct {
 }
 
 func New(timeout int) *Parser {
-	collector := colly.NewCollector()
+	collector := colly.NewCollector(
+		colly.AllowURLRevisit(),
+	)
 	collector.SetRequestTimeout(time.Duration(timeout) * time.Second)
 	collector.OnRequest(func(r *colly.Request) {
 		log.Println("Visiting", r.URL)

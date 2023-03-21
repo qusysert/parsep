@@ -17,7 +17,7 @@ type ParsePoint struct {
 	PriceType string
 	Unit      string
 	Urls      []string
-	Selectors ParseSelectors
+	Selectors []ParseSelectors
 	Formatter func(PriceRecord) PriceRecord
 }
 
