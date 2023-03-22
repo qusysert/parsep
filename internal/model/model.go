@@ -16,13 +16,13 @@ type ParsePoint struct {
 	PriceType string
 	Unit      string
 	Urls      []Url
-	Selectors []ParseSelectors
 	Formatter func(PriceRecord) PriceRecord
 }
 
 type Url struct {
-	Material string
-	Link     string
+	Material  string
+	Link      string
+	Selectors []ParseSelectors
 }
 
 type TableDataLinks struct {

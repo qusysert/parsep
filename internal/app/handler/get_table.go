@@ -23,6 +23,11 @@ func (h Handler) GetTableHandler(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				return GetTableResponse{Success: false}, err
 			}
+		case "PreciousMetalTable":
+			content, err = h.service.FormTableContent(model.PreciousMetalTable)
+			if err != nil {
+				return GetTableResponse{Success: false}, err
+			}
 		default:
 			return GetTableResponse{Success: false}, fmt.Errorf("table name %s not found", req.TableName)
 		}

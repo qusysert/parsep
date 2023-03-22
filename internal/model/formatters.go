@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+func kitcoFormatter(pr PriceRecord) PriceRecord {
+	return pr
+}
+
 func lmeFormatter(pr PriceRecord) PriceRecord {
 	pr.Change = regexp.MustCompile(`[^\d\.\+\-]`).ReplaceAllString(pr.Change, "")
 	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {

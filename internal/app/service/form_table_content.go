@@ -20,7 +20,7 @@ func (s *Service) FormTableContent(tableData model.TableDataLinks) (model.Tabled
 		col.Title = pp.Exchange + ", " + pp.PriceType + ", " + pp.Unit
 		for _, u := range pp.Urls {
 			go func(url model.Url) {
-				for _, selector := range pp.Selectors {
+				for _, selector := range u.Selectors {
 					resp, err := s.repo.ScrapePrice(url, selector, pp.Formatter)
 					results <- result{resp, err}
 				}
