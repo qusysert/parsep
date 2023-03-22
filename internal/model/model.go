@@ -7,7 +7,6 @@ type PriceRecord struct {
 }
 
 type ParseSelectors struct {
-	TitleSelector  string
 	PriceSelector  string
 	ChangeSelector string
 }
@@ -16,9 +15,14 @@ type ParsePoint struct {
 	Exchange  string
 	PriceType string
 	Unit      string
-	Urls      []string
+	Urls      []Url
 	Selectors []ParseSelectors
 	Formatter func(PriceRecord) PriceRecord
+}
+
+type Url struct {
+	Material string
+	Link     string
 }
 
 type TableDataLinks struct {

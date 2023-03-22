@@ -2,16 +2,14 @@ package repository
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly"
-	"golang.org/x/net/html"
 	"log"
 	"parser/internal/model"
 	"regexp"
 	"strconv"
 )
 
-func (r *Repository) ScrapePrice(url string, selectors model.ParseSelectors, formatter func(model.PriceRecord) model.PriceRecord) (model.PriceRecord, error) {
+func (r *Repository) ScrapePrice(url model.Url, selectors model.ParseSelectors, formatter func(model.PriceRecord) model.PriceRecord) (model.PriceRecord, error) {
 	var pr model.PriceRecord
 	r.colly.OnHTML(selectors.PriceSelector, func(e *colly.HTMLElement) {
 		price, err := strconv.ParseFloat(regexp.MustCompile(`[^\d\.]`).ReplaceAllString(e.Text, ""), 64)
@@ -25,17 +23,11 @@ func (r *Repository) ScrapePrice(url string, selectors model.ParseSelectors, for
 		pr.Change = e.Text
 	})
 
-	r.colly.OnHTML(selectors.TitleSelector, func(e *colly.HTMLElement) {
-		commodity := e.DOM.Contents().FilterFunction(func(i int, s *goquery.Selection) bool {
-			return s.Nodes[0].Type == html.TextNode
-		}).Text()
-		pr.Material = commodity
-	})
-
-	err := r.colly.Visit(url)
+	err := r.colly.Visit(url.Link)
 	if err != nil {
 		return model.PriceRecord{}, fmt.Errorf("error visiting %s: %w", url, err)
 	}
+	pr.Material = url.Material
 	pr = formatter(pr)
 	return pr, nil
 }
