@@ -2,35 +2,35 @@ package model
 
 var kitcoGoldSelectors = []ParseSelectors{
 	{
-		PriceSelector:  ".AU-ask",
-		ChangeSelector: ".AU-change-percent .spotred",
+		PriceSelector:  ".odd #AU-ask",
+		ChangeSelector: "#AU-change-percent",
 	},
 }
 
 var kitcoSilverSelectors = []ParseSelectors{
 	{
-		PriceSelector:  ".AG-ask",
-		ChangeSelector: ".AG-change-percent .spotred",
+		PriceSelector:  ".even #AG-ask",
+		ChangeSelector: "#AG-change-percent",
 	},
 }
 
 var kitcoPlatinumSelectors = []ParseSelectors{
 	{
-		PriceSelector:  ".PT-ask",
-		ChangeSelector: ".PT-change-percent .spotred",
+		PriceSelector:  ".odd #PT-ask",
+		ChangeSelector: "#PT-change-percent",
 	},
 }
 
 var kitcoPalladiumSelectors = []ParseSelectors{
 	{
-		PriceSelector:  ".PD-ask",
-		ChangeSelector: ".PD-change-percent .spotred",
+		PriceSelector:  ".even #PD-ask",
+		ChangeSelector: "#PD-change-percent",
 	},
 }
 
 var kitcoRhodiumSelectors = []ParseSelectors{
 	{
-		PriceSelector:  ".RH-ask",
-		ChangeSelector: ".RH-change-percent .spotred",
+		PriceSelector:  ".odd #RH-ask",
+		ChangeSelector: "#RH-change-percent",
 	},
 }

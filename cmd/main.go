@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 	"parser/internal/app/handler"
-	"parser/internal/app/pkg"
 	"parser/internal/app/pkg/config"
+	"parser/internal/app/pkg/parser"
 	"parser/internal/app/repository"
 	"parser/internal/app/service"
 	"parser/pkg/render_client"
@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot load cfg: ", err)
 	}
-	parser := pkg.New(cfg.ParserTimeoutSeconds)
+	parser := parser.New(cfg.ParserTimeoutSeconds)
 	repo := repository.New(parser.Collector)
 	renderer := render_client.New(cfg.RendererHost, cfg.RendererPort)
 	srv := service.New(repo, renderer)

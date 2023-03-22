@@ -6,7 +6,7 @@ var PreciousMetalTable = TableDataLinks{
 		{
 			Exchange:  "Kitco",
 			PriceType: "Price",
-			Unit:      "$/кг",
+			Unit:      "$/oz",
 			Urls: []Url{
 				{"Золото", "https://www.kitco.com/market/", kitcoGoldSelectors},
 				{"Серебро", "https://www.kitco.com/market/", kitcoSilverSelectors},
