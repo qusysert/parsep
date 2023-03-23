@@ -1,6 +1,7 @@
 package model
 
 import (
+	"math"
 	"regexp"
 	"strings"
 )
@@ -10,6 +11,7 @@ func moneymetalFormatter(pr PriceRecord) PriceRecord {
 	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {
 		pr.Change = "+" + pr.Change
 	}
+	pr.Price = math.Round(pr.Price*32.1507*100) / 100
 	return pr
 }
 
@@ -18,6 +20,7 @@ func kitcoFormatter(pr PriceRecord) PriceRecord {
 	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {
 		pr.Change = "+" + pr.Change
 	}
+	pr.Price = math.Round(pr.Price*32.1507*100) / 100
 	return pr
 }
 
