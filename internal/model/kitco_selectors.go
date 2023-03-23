@@ -27,10 +27,3 @@ var kitcoPalladiumSelectors = []ParseSelectors{
 		ChangeSelector: "#PD-change-percent",
 	},
 }
-
-var kitcoRhodiumSelectors = []ParseSelectors{
-	{
-		PriceSelector:  ".odd #RH-ask",
-		ChangeSelector: "#RH-change-percent",
-	},
-}

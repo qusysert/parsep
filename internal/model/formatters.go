@@ -5,7 +5,19 @@ import (
 	"strings"
 )
 
+func moneymetalFormatter(pr PriceRecord) PriceRecord {
+	pr.Change = regexp.MustCompile(`[^\d\.\+\-]`).ReplaceAllString(pr.Change, "")
+	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {
+		pr.Change = "+" + pr.Change
+	}
+	return pr
+}
+
 func kitcoFormatter(pr PriceRecord) PriceRecord {
+	pr.Change = regexp.MustCompile(`[^\d\.\+\-]`).ReplaceAllString(pr.Change, "")
+	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {
+		pr.Change = "+" + pr.Change
+	}
 	return pr
 }
 
