@@ -7,8 +7,9 @@ type PriceRecord struct {
 }
 
 type ParseSelectors struct {
-	PriceSelector  string
-	ChangeSelector string
+	PriceSelector     string
+	ChangeSelector    string
+	PrevPriceSelector string
 }
 
 type ParsePoint struct {
@@ -22,7 +23,7 @@ type ParsePoint struct {
 type Url struct {
 	Material  string
 	Link      string
-	Selectors []ParseSelectors
+	Selectors ParseSelectors
 }
 
 type TableDataLinks struct {

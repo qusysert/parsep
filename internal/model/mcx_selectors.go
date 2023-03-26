@@ -1,8 +1,6 @@
 package model
 
-var mcxSelectors = []ParseSelectors{
-	{
-		PriceSelector:  ".commodityPrice",
-		ChangeSelector: ".perChng",
-	},
+var mcxSelectors = ParseSelectors{
+	PriceSelector:  ".commodityPrice",
+	ChangeSelector: ".perChng",
 }

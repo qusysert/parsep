@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+func cbrFormatter(pr PriceRecord) PriceRecord {
+	return pr
+}
+
 func moneymetalFormatter(pr PriceRecord) PriceRecord {
 	pr.Change = regexp.MustCompile(`[^\d\.\+\-]`).ReplaceAllString(pr.Change, "")
 	if pr.Change[0:1] != "+" && pr.Change[0:1] != "-" {

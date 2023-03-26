@@ -27,6 +27,18 @@ var PreciousMetalTable = TableDataLinks{
 			},
 			Formatter: moneymetalFormatter,
 		},
+		{
+			Exchange:  "ЦБ",
+			PriceType: "Price",
+			Unit:      "₽/г",
+			Urls: []Url{
+				{"Золото", "https://www.cbr.ru/hd_base/metall/metall_base_new/", cbrGoldSelectors},
+				{"Серебро", "https://www.cbr.ru/hd_base/metall/metall_base_new/", cbrSilverSelectors},
+				{"Платина", "https://www.cbr.ru/hd_base/metall/metall_base_new/", cbrPlatinumSelectors},
+				{"Палладий", "https://www.cbr.ru/hd_base/metall/metall_base_new/", cbrPalladiumSelectors},
+			},
+			Formatter: cbrFormatter,
+		},
 	},
 }
 
